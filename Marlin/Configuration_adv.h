@@ -111,7 +111,7 @@
 #if ENABLED(PIDTEMP)
   // this adds an experimental additional term to the heating power, proportional to the extrusion speed.
   // if Kc is chosen well, the additional required power due to increased melting should be compensated.
-  //#define PID_EXTRUSION_SCALING
+  //#define PID_EXTRUSION_SCALING  //#optional (650 bytes)
   #if ENABLED(PID_EXTRUSION_SCALING)
     #define DEFAULT_Kc (100) //heating power=Kc*(e_speed)
     #define LPQ_MAX_LEN 50
@@ -128,17 +128,17 @@
  * Also, if the temperature is set to a value below mintemp, it will not be changed by autotemp.
  * On an Ultimaker, some initial testing worked with M109 S215 B260 F1 in the start.gcode
  */
-#define AUTOTEMP
+#define AUTOTEMP  //#optional (2204 bytes)
 #if ENABLED(AUTOTEMP)
   #define AUTOTEMP_OLDWEIGHT 0.98
 #endif
 
 // Show extra position information in M114
-//#define M114_DETAIL
+//#define M114_DETAIL  //#optional (2708 bytes)
 
 // Show Temperature ADC value
 // Enable for M105 to include ADC values read from temperature sensors.
-//#define SHOW_TEMP_ADC_VALUES
+//#define SHOW_TEMP_ADC_VALUES  //#optional (122 bytes)
 
 /**
  * High Temperature Thermistor Support
@@ -172,7 +172,7 @@
 // Extruder runout prevention.
 // If the machine is idle and the temperature over MINTEMP
 // then extrude some filament every couple of SECONDS.
-//#define EXTRUDER_RUNOUT_PREVENT
+//#define EXTRUDER_RUNOUT_PREVENT  //#optional
 #if ENABLED(EXTRUDER_RUNOUT_PREVENT)
   #define EXTRUDER_RUNOUT_MINTEMP 190
   #define EXTRUDER_RUNOUT_SECONDS 30
@@ -206,7 +206,7 @@
 // When first starting the main fan, run it at full speed for the
 // given number of milliseconds.  This gets the fan spinning reliably
 // before setting a PWM value. (Does not work with software PWM for fan on Sanguinololu)
-//#define FAN_KICKSTART_TIME 100
+//#define FAN_KICKSTART_TIME 100  //#optional (116 bytes)
 
 /**
  * PWM Fan Scaling
@@ -220,7 +220,7 @@
  *
  * Define one or both of these to override the default 0-255 range.
  */
-//#define FAN_MIN_PWM 50
+//#define FAN_MIN_PWM 50  //#optional (26 bytes)
 //#define FAN_MAX_PWM 128
 
 // @section extruder
@@ -386,7 +386,7 @@
 #define Y_HOME_BUMP_MM 5
 #define Z_HOME_BUMP_MM 2
 #define HOMING_BUMP_DIVISOR { 2, 2, 4 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
-//#define QUICK_HOME                     // If homing includes X and Y, do a diagonal move initially
+#define QUICK_HOME                       // If homing includes X and Y, do a diagonal move initially
 
 // When G28 is called, this option will make Y home before X
 //#define HOME_Y_BEFORE_X
@@ -493,7 +493,7 @@
 #define DEFAULT_MINSEGMENTTIME        20000
 
 // If defined the movements slow down when the look ahead buffer is only half full
-#define SLOWDOWN
+#define SLOWDOWN  //#optional (166 bytes)
 
 // Frequency limit
 // See nophead's blog for more info
@@ -508,9 +508,10 @@
 //
 // Use Junction Deviation instead of traditional Jerk Limiting
 //
-//#define JUNCTION_DEVIATION
+#define JUNCTION_DEVIATION  //#ADS
 #if ENABLED(JUNCTION_DEVIATION)
-  #define JUNCTION_DEVIATION_MM 0.02  // (mm) Distance from real junction edge
+  //#define JUNCTION_DEVIATION_MM 0.02  // (mm) Distance from real junction edge
+  #define JUNCTION_DEVIATION_MM 0.05  // (mm) Distance from real junction edge  //#ADS
 #endif
 
 /**
@@ -519,7 +520,7 @@
  * vibration and surface artifacts. The algorithm adapts to provide the best possible step smoothing at the
  * lowest stepping frequencies.
  */
-//#define ADAPTIVE_STEP_SMOOTHING
+#define ADAPTIVE_STEP_SMOOTHING  //#ADS
 
 // Microstep setting (Only functional when stepper driver microstep pins are connected to MCU.
 #define MICROSTEP_MODES { 16, 16, 16, 16, 16 } // [1,2,4,8,16]
@@ -583,16 +584,16 @@
 // @section lcd
 
 // Include a page of printer information in the LCD Main Menu
-//#define LCD_INFO_MENU
+//#define LCD_INFO_MENU  //#optional (1912 bytes)
 
 // Scroll a longer status message into view
-//#define STATUS_MESSAGE_SCROLLING
+#define STATUS_MESSAGE_SCROLLING  //#optional (154 bytes)
 
 // On the Info Screen, display XY with one decimal place when possible
-//#define LCD_DECIMAL_SMALL_XY
+//#define LCD_DECIMAL_SMALL_XY  //#optional (154 bytes)
 
 // The timeout (in ms) to return to the status screen from sub-menus
-//#define LCD_TIMEOUT_TO_STATUS 15000
+#define LCD_TIMEOUT_TO_STATUS 30000  //#ADS #optional (0 bytes)
 
 // Add an 'M73' G-code to set the current percentage
 //#define LCD_SET_PROGRESS_MANUALLY
@@ -652,7 +653,7 @@
    * an option on the LCD screen to continue the print from the last-known
    * point in the file.
    */
-  //#define POWER_LOSS_RECOVERY
+  //#define POWER_LOSS_RECOVERY  //#optional
   #if ENABLED(POWER_LOSS_RECOVERY)
     //#define POWER_LOSS_PIN   44     // Pin to detect power loss
     //#define POWER_LOSS_STATE HIGH   // State of pin indicating power loss
@@ -681,16 +682,16 @@
    *  - SDSORT_CACHE_NAMES will retain the sorted file listing in RAM. (Expensive!)
    *  - SDSORT_DYNAMIC_RAM only uses RAM when the SD menu is visible. (Use with caution!)
    */
-  //#define SDCARD_SORT_ALPHA
+  #define SDCARD_SORT_ALPHA  //#ADS #optional
 
   // SD Card Sorting options
   #if ENABLED(SDCARD_SORT_ALPHA)
-    #define SDSORT_LIMIT       40     // Maximum number of sorted items (10-256). Costs 27 bytes each.
-    #define FOLDER_SORTING     -1     // -1=above  0=none  1=below
+    #define SDSORT_LIMIT       50     // Maximum number of sorted items (10-256). Costs 27 bytes each.  //#ADS
+    #define FOLDER_SORTING     1      // -1=above  0=none  1=below  //#ADS
     #define SDSORT_GCODE       false  // Allow turning sorting on/off with LCD and M34 g-code.
-    #define SDSORT_USES_RAM    false  // Pre-allocate a static array for faster pre-sorting.
+    #define SDSORT_USES_RAM    true   // Pre-allocate a static array for faster pre-sorting.
     #define SDSORT_USES_STACK  false  // Prefer the stack for pre-sorting to give back some SRAM. (Negated by next 2 options.)
-    #define SDSORT_CACHE_NAMES false  // Keep sorted items in RAM longer for speedy performance. Most expensive option.
+    #define SDSORT_CACHE_NAMES true   // Keep sorted items in RAM longer for speedy performance. Most expensive option.
     #define SDSORT_DYNAMIC_RAM false  // Use dynamic allocation (within SD menus). Least expensive option. Set SDSORT_LIMIT before use!
     #define SDSORT_CACHE_VFATS 2      // Maximum number of 13-byte VFAT entries to use for sorting.
                                       // Note: Only affects SCROLL_LONG_FILENAMES with SDSORT_CACHE_NAMES but not SDSORT_DYNAMIC_RAM.
@@ -700,7 +701,7 @@
   //#define LONG_FILENAME_HOST_SUPPORT
 
   // Enable this option to scroll long filenames in the SD card menu
-  //#define SCROLL_LONG_FILENAMES
+  #define SCROLL_LONG_FILENAMES  //#ADS #optional
 
   /**
    * This option allows you to abort SD printing when any endstop is triggered.
@@ -740,10 +741,10 @@
   //#define DOGM_SD_PERCENT
 
   // Enable to save many cycles by drawing a hollow frame on the Info Screen
-  #define XYZ_HOLLOW_FRAME
+  #define XYZ_HOLLOW_FRAME  //#optional (198 bytes)
 
   // Enable to save many cycles by drawing a hollow frame on Menu Screens
-  #define MENU_HOLLOW_FRAME
+  #define MENU_HOLLOW_FRAME  //#optional (44 bytes)
 
   // A bigger font is available for edit items. Costs 3120 bytes of PROGMEM.
   // Western only. Not available for Cyrillic, Kana, Turkish, Greek, or Chinese.
@@ -785,7 +786,7 @@
 
 // The hardware watchdog should reset the microcontroller disabling all outputs,
 // in case the firmware gets stuck and doesn't do temperature regulation.
-#define USE_WATCHDOG
+#define USE_WATCHDOG  //#optional (30 bytes)
 
 #if ENABLED(USE_WATCHDOG)
   // If you have a watchdog reboot in an ArduinoMega2560 then the device will hang forever, as a watchdog reset will leave the watchdog on.
@@ -803,13 +804,13 @@
  *
  * Warning: Does not respect endstops!
  */
-//#define BABYSTEPPING
+#define BABYSTEPPING  //#optional (852 bytes)
 #if ENABLED(BABYSTEPPING)
-  //#define BABYSTEP_XY              // Also enable X/Y Babystepping. Not supported on DELTA!
+  //#define BABYSTEP_XY              // Also enable X/Y Babystepping. Not supported on DELTA!  //#optional (648 bytes)
   #define BABYSTEP_INVERT_Z false    // Change if Z babysteps should go the other way
-  #define BABYSTEP_MULTIPLICATOR 1   // Babysteps are very small. Increase for faster motion.
-  //#define BABYSTEP_ZPROBE_OFFSET   // Enable to combine M851 and Babystepping
-  //#define DOUBLECLICK_FOR_Z_BABYSTEPPING // Double-click on the Status Screen for Z Babystepping.
+  #define BABYSTEP_MULTIPLICATOR  10 // Babysteps are very small. Increase for faster motion.
+  //#define BABYSTEP_ZPROBE_OFFSET   // Enable to combine M851 and Babystepping  //#optional (376 bytes)
+  #define DOUBLECLICK_FOR_Z_BABYSTEPPING // Double-click on the Status Screen for Z Babystepping.  //#optional (158 bytes)
   #define DOUBLECLICK_MAX_INTERVAL 1250 // Maximum interval between clicks, in milliseconds.
                                         // Note: Extra time may be added to mitigate controller latency.
   //#define BABYSTEP_ZPROBE_GFX_OVERLAY // Enable graphical overlay on Z-offset editor
@@ -833,9 +834,9 @@
  * See http://marlinfw.org/docs/features/lin_advance.html for full instructions.
  * Mention @Sebastianv650 on GitHub to alert the author of any issues.
  */
-//#define LIN_ADVANCE
+#define LIN_ADVANCE  //#ADS #optional
 #if ENABLED(LIN_ADVANCE)
-  #define LIN_ADVANCE_K 0.22  // Unit: mm compression per 1mm/s extruder speed
+  #define LIN_ADVANCE_K 0.05  // Unit: mm compression per 1mm/s extruder speed  //#ADS
   //#define LA_DEBUG          // If enabled, this will generate debug information output over USB.
 #endif
 
@@ -854,7 +855,7 @@
 //
 // G2/G3 Arc Support
 //
-#define ARC_SUPPORT               // Disable this feature to save ~3226 bytes
+//#define ARC_SUPPORT               // Disable this feature to save ~3226 bytes
 #if ENABLED(ARC_SUPPORT)
   #define MM_PER_ARC_SEGMENT  1   // Length of each arc segment
   #define N_ARC_CORRECTION   25   // Number of intertpolated segments between corrections
@@ -985,7 +986,7 @@
 //#define NO_TIMEOUTS 1000 // Milliseconds
 
 // Some clients will have this feature soon. This could make the NO_TIMEOUTS unnecessary.
-//#define ADVANCED_OK
+//#define ADVANCED_OK  //#optional
 
 // @section extras
 
@@ -1037,21 +1038,21 @@
  * Requires NOZZLE_PARK_FEATURE.
  * This feature is required for the default FILAMENT_RUNOUT_SCRIPT.
  */
-//#define ADVANCED_PAUSE_FEATURE
+//#define ADVANCED_PAUSE_FEATURE  //#ADS #optional (6616 bytes)
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
   #define PAUSE_PARK_RETRACT_FEEDRATE         60  // (mm/s) Initial retract feedrate.
-  #define PAUSE_PARK_RETRACT_LENGTH            2  // (mm) Initial retract.
+  #define PAUSE_PARK_RETRACT_LENGTH            4  // (mm) Initial retract.
                                                   // This short retract is done immediately, before parking the nozzle.
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     10  // (mm/s) Unload filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_UNLOAD_ACCEL        25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
-  #define FILAMENT_CHANGE_UNLOAD_LENGTH      100  // (mm) The length of filament for a complete unload.
+  #define FILAMENT_CHANGE_UNLOAD_LENGTH      420  // (mm) The length of filament for a complete unload.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
                                                   //   Set to 0 for manual unloading.
   #define FILAMENT_CHANGE_SLOW_LOAD_FEEDRATE   6  // (mm/s) Slow move when starting load.
   #define FILAMENT_CHANGE_SLOW_LOAD_LENGTH     0  // (mm) Slow length, to allow time to insert material.
                                                   // 0 to disable start loading and skip to fast load only
-  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE   6  // (mm/s) Load filament feedrate. This can be pretty fast.
+  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE   8  // (mm/s) Load filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_FAST_LOAD_ACCEL     25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
   #define FILAMENT_CHANGE_FAST_LOAD_LENGTH     0  // (mm) Load length of filament, from extruder gear to nozzle.
                                                   //   For Bowden, the full length of the tube and nozzle.
@@ -1068,12 +1069,12 @@
   #define FILAMENT_UNLOAD_DELAY             5000  // (ms) Delay for the filament to cool after retract.
   #define FILAMENT_UNLOAD_PURGE_LENGTH         8  // (mm) An unretract is done, then this length is purged.
 
-  #define PAUSE_PARK_NOZZLE_TIMEOUT           45  // (seconds) Time limit before the nozzle is turned off for safety.
-  #define FILAMENT_CHANGE_ALERT_BEEPS         10  // Number of alert beeps to play when a response is needed.
+  #define PAUSE_PARK_NOZZLE_TIMEOUT          120  // (seconds) Time limit before the nozzle is turned off for safety.
+  #define FILAMENT_CHANGE_ALERT_BEEPS          6  // Number of alert beeps to play when a response is needed.
   #define PAUSE_PARK_NO_STEPPER_TIMEOUT           // Enable for XYZ steppers to stay powered on during filament change.
 
-  //#define PARK_HEAD_ON_PAUSE                    // Park the nozzle during pause and filament change.
-  //#define HOME_BEFORE_FILAMENT_CHANGE           // Ensure homing has been completed prior to parking for filament change
+  #define PARK_HEAD_ON_PAUSE                      // Park the nozzle during pause and filament change.
+  #define HOME_BEFORE_FILAMENT_CHANGE             // Ensure homing has been completed prior to parking for filament change
 
   //#define FILAMENT_LOAD_UNLOAD_GCODES           // Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
   //#define FILAMENT_UNLOAD_ALL_EXTRUDERS         // Allow M702 to unload all extruders above a minimum target temp (as set by M302)
@@ -1133,7 +1134,7 @@
   #define E4_SENSE_RESISTOR   91
   #define E4_MICROSTEPS       16
 
-#endif // TMC26X
+#endif
 
 // @section tmc_smart
 
@@ -1361,7 +1362,7 @@
   #define E4_OVERCURRENT  2000
   #define E4_STALLCURRENT 1500
 
-#endif // L6470
+#endif
 
 /**
  * TWI/I2C BUS
@@ -1465,11 +1466,14 @@
  */
 //#define FILAMENT_WIDTH_SENSOR
 
+#define DEFAULT_STDDEV_FILAMENT_DIA 0.05    // Typical estimate for cheap filament
+//#define DEFAULT_STDDEV_FILAMENT_DIA 0.02  // Typical advertised for higher quality filament
+
 #if ENABLED(FILAMENT_WIDTH_SENSOR)
   #define FILAMENT_SENSOR_EXTRUDER_NUM 0    // Index of the extruder that has the filament sensor. :[0,1,2,3,4]
   #define MEASUREMENT_DELAY_CM        14    // (cm) The distance from the filament sensor to the melting chamber
 
-  #define FILWIDTH_ERROR_MARGIN        1.0  // (mm) If a measurement differs too much from nominal width ignore it
+  #define FILWIDTH_ERROR_MARGIN (DEFAULT_STDDEV_FILAMENT_DIA*4)  // (mm) If a measurement differs too much from nominal width ignore it
   #define MAX_MEASUREMENT_DELAY       20    // (bytes) Buffer size for stored measurements (1 byte per cm). Must be larger than MEASUREMENT_DELAY_CM.
 
   #define DEFAULT_MEASURED_FILAMENT_DIA DEFAULT_NOMINAL_FILAMENT_DIA // Set measured to nominal initially
@@ -1494,12 +1498,12 @@
 /**
  * Auto-report temperatures with M155 S<seconds>
  */
-#define AUTO_REPORT_TEMPERATURES
+#define AUTO_REPORT_TEMPERATURES  //#optional (284 bytes)
 
 /**
  * Include capabilities in M115 output
  */
-#define EXTENDED_CAPABILITIES_REPORT
+#define EXTENDED_CAPABILITIES_REPORT  //#optional (516 bytes)
 
 /**
  * Disable all Volumetric extrusion options
@@ -1524,7 +1528,7 @@
  *  - M206 and M428 are disabled.
  *  - G92 will revert to its behavior from Marlin 1.0.
  */
-//#define NO_WORKSPACE_OFFSETS
+#define NO_WORKSPACE_OFFSETS  //#optional (-3146 bytes)
 
 /**
  * Set the number of proportional font spaces required to fill up a typical character space.
@@ -1570,15 +1574,15 @@
  * Will be sent in the form '//action:ACTION_ON_KILL', e.g. '//action:poweroff'.
  * The host must be configured to handle the action command.
  */
-//#define ACTION_ON_KILL "poweroff"
+//#define ACTION_ON_KILL "poweroff" //#optional (46 bytes)
 
 /**
  * Specify an action command to send to the host on pause and resume.
  * Will be sent in the form '//action:ACTION_ON_PAUSE', e.g. '//action:pause'.
  * The host must be configured to handle the action command.
  */
-//#define ACTION_ON_PAUSE "pause"
-//#define ACTION_ON_RESUME "resume"
+//#define ACTION_ON_PAUSE "pause"  //#optional?
+//#define ACTION_ON_RESUME "resume"  //#optional?
 
 //===========================================================================
 //====================== I2C Position Encoder Settings ======================
