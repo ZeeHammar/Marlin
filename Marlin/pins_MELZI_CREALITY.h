@@ -69,6 +69,10 @@
   #define DOGLCD_CS        LCD_PINS_RS
 #endif
 
+// BLTouch mapping using beeper pin
+#define BEEPER_PIN      -1  //#ADS
+#define SERVO0_PIN      27  //#ADS
+
 /**
   PIN:   0   Port: B0        E0_DIR_PIN                  protected
   PIN:   1   Port: B1        E0_STEP_PIN                 protected
